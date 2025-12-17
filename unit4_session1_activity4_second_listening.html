@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 4 Session 1 - Second Listening</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #2c3e50;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #e67e22;
+            font-size: 18px;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .instructions {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-left: 4px solid #e67e22;
+            margin-bottom: 30px;
+            border-radius: 5px;
+        }
+
+        .audio-section {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .audio-placeholder {
+            background-color: #e67e22;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+
+        .section-title {
+            color: #e67e22;
+            font-size: 20px;
+            font-weight: bold;
+            margin: 25px 0 15px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e67e22;
+        }
+
+        .question {
+            background-color: #ffffff;
+            padding: 15px;
+            margin-bottom: 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .question-number {
+            color: #e67e22;
+            font-weight: bold;
+            min-width: 25px;
+        }
+
+        .question-text {
+            flex: 1;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            max-width: 300px;
+            padding: 8px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 16px;
+            font-family: inherit;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #e67e22;
+        }
+
+        input[type="text"].short {
+            max-width: 120px;
+        }
+
+        button {
+            background-color: #e67e22;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+            margin-right: 10px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #d35400;
+        }
+
+        .reset-btn {
+            background-color: #95a5a6;
+        }
+
+        .reset-btn:hover {
+            background-color: #7f8c8d;
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback h3 {
+            margin-bottom: 15px;
+        }
+
+        .feedback-item {
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 5px;
+        }
+
+        .correct {
+            background-color: #d4edda;
+            border-left: 4px solid #27ae60;
+        }
+
+        .incorrect {
+            background-color: #f8d7da;
+            border-left: 4px solid #e74c3c;
+        }
+
+        .score {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            text-align: center;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .score-value {
+            color: #e67e22;
+            font-size: 32px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .subtitle {
+                font-size: 16px;
+            }
+
+            .question {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            input[type="text"] {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Unit 4 · Emergency Procedures</h1>
+        <div class="subtitle">Session 1 - Second Listening: Specific Details</div>
+
+        <div class="instructions">
+            <strong>Instructions:</strong> Listen again and complete the information with specific details from the emergency call.
+        </div>
+
+        <div class="audio-section">
+            <p><strong>Emergency Call to 112</strong></p>
+            <div class="audio-placeholder">
+                [Add your audio file here - replace this div with an audio player]<br>
+                <small>Insert: &lt;audio controls&gt;&lt;source src="your-audio-file.mp3"&gt;&lt;/audio&gt;</small>
+            </div>
+        </div>
+
+        <form id="quizForm">
+            <div class="section-title">Location Details</div>
+
+            <div class="question">
+                <span class="question-number">1.</span>
+                <span class="question-text">Street name: Avenida de la</span>
+                <input type="text" id="q1" class="short" placeholder="street name">
+                <span>, number</span>
+                <input type="text" id="q1b" class="short" placeholder="number">
+            </div>
+
+            <div class="question">
+                <span class="question-number">2.</span>
+                <span class="question-text">Type of site:</span>
+                <input type="text" id="q2" placeholder="type">
+                <span>construction site</span>
+            </div>
+
+            <div class="question">
+                <span class="question-number">3.</span>
+                <span class="question-text">Site identification: Big</span>
+                <input type="text" id="q3" class="short" placeholder="color">
+                <span>site with yellow</span>
+                <input type="text" id="q3b" class="short" placeholder="equipment">
+            </div>
+
+            <div class="question">
+                <span class="question-number">4.</span>
+                <span class="question-text">Access: Main entrance with</span>
+                <input type="text" id="q4" class="short" placeholder="type">
+                <span>gates</span>
+            </div>
+
+            <div class="section-title">Accident Details</div>
+
+            <div class="question">
+                <span class="question-number">5.</span>
+                <span class="question-text">What was the victim doing? He was</span>
+                <input type="text" id="q5" placeholder="action">
+                <span>cables to the distribution board</span>
+            </div>
+
+            <div class="question">
+                <span class="question-number">6.</span>
+                <span class="question-text">What did he touch? A</span>
+                <input type="text" id="q6" placeholder="type of wire">
+                <span>wire</span>
+            </div>
+
+            <div class="question">
+                <span class="question-number">7.</span>
+                <span class="question-text">What happened immediately after? He</span>
+                <input type="text" id="q7" placeholder="action">
+            </div>
+
+            <div class="question">
+                <span class="question-number">8.</span>
+                <span class="question-text">What did the caller do immediately? She</span>
+                <input type="text" id="q8" placeholder="action">
+                <span>the main power</span>
+            </div>
+
+            <div class="section-title">Victim's Condition</div>
+
+            <div class="question">
+                <span class="question-number">9.</span>
+                <span class="question-text">Is he breathing?</span>
+                <input type="text" id="q9" class="short" placeholder="Yes/No">
+            </div>
+
+            <div class="question">
+                <span class="question-number">10.</span>
+                <span class="question-text">Evidence of breathing: The caller can see his</span>
+                <input type="text" id="q10" class="short" placeholder="body part">
+                <span>moving</span>
+            </div>
+
+            <div class="question">
+                <span class="question-number">11.</span>
+                <span class="question-text">Does he have a pulse?</span>
+                <input type="text" id="q11" class="short" placeholder="Yes/No">
+            </div>
+
+            <div class="question">
+                <span class="question-number">12.</span>
+                <span class="question-text">Where did she check the pulse? On his</span>
+                <input type="text" id="q12" class="short" placeholder="body part">
+            </div>
+
+            <div class="question">
+                <span class="question-number">13.</span>
+                <span class="question-text">Visible injury: A small</span>
+                <input type="text" id="q13" class="short" placeholder="type">
+                <span>mark on his</span>
+                <input type="text" id="q13b" class="short" placeholder="which">
+                <span>hand</span>
+            </div>
+
+            <div class="section-title">Emergency Response</div>
+
+            <div class="question">
+                <span class="question-number">14.</span>
+                <span class="question-text">How long until the ambulance arrives? About</span>
+                <input type="text" id="q14" class="short" placeholder="number">
+                <span>minutes</span>
+            </div>
+
+            <div class="question">
+                <span class="question-number">15.</span>
+                <span class="question-text">What position should the victim be placed in? The</span>
+                <input type="text" id="q15" placeholder="position name">
+                <span>position</span>
+            </div>
+
+            <button type="button" onclick="checkAnswers()">Check Answers</button>
+            <button type="button" class="reset-btn" onclick="resetQuiz()">Reset</button>
+        </form>
+
+        <div id="feedback" class="feedback"></div>
+    </div>
+
+    <script>
+        const answers = {
+            q1: ["industria"],
+            q1b: ["45"],
+            q2: ["office complex", "office"],
+            q3: ["blue"],
+            q3b: ["cranes"],
+            q4: ["security"],
+            q5: ["connecting"],
+            q6: ["live"],
+            q7: ["collapsed"],
+            q8: ["switched off", "disconnected"],
+            q9: ["yes"],
+            q10: ["chest"],
+            q11: ["yes"],
+            q12: ["neck"],
+            q13: ["burn"],
+            q13b: ["right"],
+            q14: ["8", "eight"],
+            q15: ["recovery"]
+        };
+
+        const correctText = {
+            q1: "Industria",
+            q1b: "45",
+            q2: "office complex",
+            q3: "blue",
+            q3b: "cranes",
+            q4: "security",
+            q5: "connecting",
+            q6: "live",
+            q7: "collapsed",
+            q8: "switched off",
+            q9: "Yes",
+            q10: "chest",
+            q11: "Yes",
+            q12: "neck",
+            q13: "burn",
+            q13b: "right",
+            q14: "8",
+            q15: "recovery"
+        };
+
+        function normalizeText(text) {
+            return text.toLowerCase().trim().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "");
+        }
+
+        function checkAnswer(userAnswer, correctAnswers) {
+            const normalized = normalizeText(userAnswer);
+            return correctAnswers.some(answer => normalizeText(answer) === normalized || normalized.includes(normalizeText(answer)));
+        }
+
+        function checkAnswers() {
+            let score = 0;
+            const total = 17;
+            let feedbackHTML = '<h3>Results</h3>';
+
+            const questions = Object.keys(answers);
+            
+            questions.forEach((qId, index) => {
+                const userAnswer = document.getElementById(qId).value;
+                const isCorrect = checkAnswer(userAnswer, answers[qId]);
+                if (isCorrect) score++;
+
+                feedbackHTML += `<div class="feedback-item ${isCorrect ? 'correct' : 'incorrect'}">
+                    <strong>${index + 1}.</strong> ${isCorrect ? '✓ Correct!' : '✗ Expected: ' + correctText[qId]}
+                </div>`;
+            });
+
+            const percentage = Math.round((score / total) * 100);
+            const scoreHTML = `<div class="score">Your Score: <span class="score-value">${score}/${total}</span> (${percentage}%)</div>`;
+
+            document.getElementById('feedback').innerHTML = scoreHTML + feedbackHTML;
+            document.getElementById('feedback').classList.add('show');
+            document.getElementById('feedback').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function resetQuiz() {
+            document.getElementById('quizForm').reset();
+            document.getElementById('feedback').classList.remove('show');
+            document.getElementById('feedback').innerHTML = '';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 4 Session 1 - Vocabulary Extraction</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #2c3e50;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #e67e22;
+            font-size: 18px;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .section-title {
+            background-color: #e67e22;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 5px;
+            font-size: 20px;
+            font-weight: bold;
+            margin: 30px 0 20px 0;
+        }
+
+        .instructions {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-left: 4px solid #e67e22;
+            margin-bottom: 30px;
+            border-radius: 5px;
+        }
+
+        .question {
+            background-color: #ffffff;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+        }
+
+        .question-number {
+            color: #e67e22;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 16px;
+            font-family: inherit;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #e67e22;
+        }
+
+        .inline-question {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .inline-question input[type="text"] {
+            width: auto;
+            min-width: 150px;
+            flex: 1;
+            margin-top: 0;
+        }
+
+        button {
+            background-color: #e67e22;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+            margin-right: 10px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #d35400;
+        }
+
+        .reset-btn {
+            background-color: #95a5a6;
+        }
+
+        .reset-btn:hover {
+            background-color: #7f8c8d;
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback h3 {
+            margin-bottom: 15px;
+        }
+
+        .feedback-item {
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 5px;
+        }
+
+        .correct {
+            background-color: #d4edda;
+            border-left: 4px solid #27ae60;
+        }
+
+        .incorrect {
+            background-color: #f8d7da;
+            border-left: 4px solid #e74c3c;
+        }
+
+        .score {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            text-align: center;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .score-value {
+            color: #e67e22;
+            font-size: 32px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .subtitle {
+                font-size: 16px;
+            }
+
+            .inline-question {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .inline-question input[type="text"] {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Unit 4 · Emergency Procedures</h1>
+        <div class="subtitle">Session 1 - Vocabulary Extraction</div>
+
+        <form id="vocabForm">
+            <div class="section-title">Part A - Definitions</div>
+
+            <div class="instructions">
+                <strong>Instructions:</strong> Find words or expressions in the listening that match these definitions.
+            </div>
+
+            <div class="question">
+                <div class="question-number">1. Not awake or aware:</div>
+                <div>u<input type="text" id="q1" placeholder="complete the word"></div>
+            </div>
+
+            <div class="question">
+                <div class="question-number">2. A place where buildings are being constructed:</div>
+                <div>c<input type="text" id="q2a" placeholder="first word" style="max-width: 200px"> s<input type="text" id="q2b" placeholder="second word" style="max-width: 200px"></div>
+            </div>
+
+            <div class="question">
+                <div class="question-number">3. A sudden flow of electricity through the body:</div>
+                <div>e<input type="text" id="q3a" placeholder="first word" style="max-width: 200px"> s<input type="text" id="q3b" placeholder="second word" style="max-width: 200px"></div>
+            </div>
+
+            <div class="question">
+                <div class="question-number">4. A wire that carries electrical current:</div>
+                <div>l<input type="text" id="q4a" placeholder="first word" style="max-width: 200px"> w<input type="text" id="q4b" placeholder="second word" style="max-width: 200px"></div>
+            </div>
+
+            <div class="question">
+                <div class="question-number">5. To fall down suddenly:</div>
+                <div>c<input type="text" id="q5" placeholder="complete the word"></div>
+            </div>
+
+            <div class="question">
+                <div class="question-number">6. A device that automatically stops electrical current:</div>
+                <div>c<input type="text" id="q6a" placeholder="first word" style="max-width: 200px"> b<input type="text" id="q6b" placeholder="second word" style="max-width: 200px"></div>
+            </div>
+
+            <div class="question">
+                <div class="question-number">7. The regular beat you can feel in your neck or wrist:</div>
+                <div>p<input type="text" id="q7" placeholder="complete the word"></div>
+            </div>
+
+            <div class="question">
+                <div class="question-number">8. A vehicle that takes injured people to hospital:</div>
+                <div>a<input type="text" id="q8" placeholder="complete the word"></div>
+            </div>
+
+            <div class="question">
+                <div class="question-number">9. An injury caused by heat or electricity:</div>
+                <div>b<input type="text" id="q9a" placeholder="first word" style="max-width: 200px"> mark</div>
+            </div>
+
+            <div class="question">
+                <div class="question-number">10. A safe position for an unconscious person who is breathing:</div>
+                <div>r<input type="text" id="q10a" placeholder="first word" style="max-width: 200px"> p<input type="text" id="q10b" placeholder="second word" style="max-width: 200px"></div>
+            </div>
+
+            <div class="section-title">Part B - Complete the Expressions</div>
+
+            <div class="instructions">
+                <strong>Instructions:</strong> Complete these expressions from the dialogue.
+            </div>
+
+            <div class="question">
+                <div class="question-number">1. Stay _______________.</div>
+                <div class="inline-question">
+                    <span>(instruction to remain calm)</span>
+                    <input type="text" id="qb1" placeholder="your answer">
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-number">2. I switched _______________ the main power.</div>
+                <input type="text" id="qb2" placeholder="your answer">
+            </div>
+
+            <div class="question">
+                <div class="question-number">3. I can see his chest _______________.</div>
+                <input type="text" id="qb3" placeholder="your answer">
+            </div>
+
+            <div class="question">
+                <div class="question-number">4. He touched a live wire and collapsed _______________.</div>
+                <input type="text" id="qb4" placeholder="your answer">
+            </div>
+
+            <div class="question">
+                <div class="question-number">5. Help is _______________.</div>
+                <input type="text" id="qb5" placeholder="your answer">
+            </div>
+
+            <button type="button" onclick="checkAnswers()">Check Answers</button>
+            <button type="button" class="reset-btn" onclick="resetQuiz()">Reset</button>
+        </form>
+
+        <div id="feedback" class="feedback"></div>
+    </div>
+
+    <script>
+        const answers = {
+            q1: ["unconscious"],
+            q2a: ["construction", "onstruction"],
+            q2b: ["site", "ite"],
+            q3a: ["electrical", "lectrical"],
+            q3b: ["shock", "hock"],
+            q4a: ["live", "ive"],
+            q4b: ["wire", "ire"],
+            q5: ["collapsed", "ollapsed"],
+            q6a: ["circuit", "ircuit"],
+            q6b: ["breaker", "reaker"],
+            q7: ["pulse", "ulse"],
+            q8: ["ambulance", "mbulance"],
+            q9a: ["burn", "urn"],
+            q10a: ["recovery", "ecovery"],
+            q10b: ["position", "osition"],
+            qb1: ["calm"],
+            qb2: ["off"],
+            qb3: ["moving"],
+            qb4: ["immediately"],
+            qb5: ["coming"]
+        };
+
+        const correctText = {
+            q1: "unconscious",
+            q2a: "onstruction",
+            q2b: "ite",
+            q3a: "lectrical",
+            q3b: "hock",
+            q4a: "ive",
+            q4b: "ire",
+            q5: "ollapsed",
+            q6a: "ircuit",
+            q6b: "reaker",
+            q7: "ulse",
+            q8: "mbulance",
+            q9a: "urn",
+            q10a: "ecovery",
+            q10b: "osition",
+            qb1: "calm",
+            qb2: "off",
+            qb3: "moving",
+            qb4: "immediately",
+            qb5: "coming"
+        };
+
+        function normalizeText(text) {
+            return text.toLowerCase().trim().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "");
+        }
+
+        function checkAnswer(userAnswer, correctAnswers) {
+            const normalized = normalizeText(userAnswer);
+            return correctAnswers.some(answer => normalizeText(answer) === normalized || normalized.includes(normalizeText(answer)));
+        }
+
+        function checkAnswers() {
+            let score = 0;
+            const total = 20;
+            let feedbackHTML = '<h3>Results</h3>';
+
+            feedbackHTML += '<div style="font-weight: bold; margin: 15px 0; color: #e67e22;">PART A - Definitions</div>';
+
+            // Part A
+            const partA = [
+                { id: 'q1', label: '1. unconscious' },
+                { id: 'q2a', label: '2a. construction', combined: true, nextId: 'q2b', nextLabel: '2b. site' },
+                { id: 'q3a', label: '3a. electrical', combined: true, nextId: 'q3b', nextLabel: '3b. shock' },
+                { id: 'q4a', label: '4a. live', combined: true, nextId: 'q4b', nextLabel: '4b. wire' },
+                { id: 'q5', label: '5. collapsed' },
+                { id: 'q6a', label: '6a. circuit', combined: true, nextId: 'q6b', nextLabel: '6b. breaker' },
+                { id: 'q7', label: '7. pulse' },
+                { id: 'q8', label: '8. ambulance' },
+                { id: 'q9a', label: '9. burn' },
+                { id: 'q10a', label: '10a. recovery', combined: true, nextId: 'q10b', nextLabel: '10b. position' }
+            ];
+
+            partA.forEach(item => {
+                if (item.id) {
+                    const userAnswer = document.getElementById(item.id).value;
+                    const isCorrect = checkAnswer(userAnswer, answers[item.id]);
+                    if (isCorrect) score++;
+
+                    feedbackHTML += `<div class="feedback-item ${isCorrect ? 'correct' : 'incorrect'}">
+                        <strong>${item.label}:</strong> ${isCorrect ? '✓ Correct!' : '✗ Expected: ' + correctText[item.id]}
+                    </div>`;
+                }
+
+                if (item.combined && item.nextId) {
+                    const userAnswer = document.getElementById(item.nextId).value;
+                    const isCorrect = checkAnswer(userAnswer, answers[item.nextId]);
+                    if (isCorrect) score++;
+
+                    feedbackHTML += `<div class="feedback-item ${isCorrect ? 'correct' : 'incorrect'}">
+                        <strong>${item.nextLabel}:</strong> ${isCorrect ? '✓ Correct!' : '✗ Expected: ' + correctText[item.nextId]}
+                    </div>`;
+                }
+            });
+
+            feedbackHTML += '<div style="font-weight: bold; margin: 15px 0; color: #e67e22;">PART B - Complete the Expressions</div>';
+
+            // Part B
+            const partB = [
+                { id: 'qb1', label: '1. calm' },
+                { id: 'qb2', label: '2. off' },
+                { id: 'qb3', label: '3. moving' },
+                { id: 'qb4', label: '4. immediately' },
+                { id: 'qb5', label: '5. coming' }
+            ];
+
+            partB.forEach(item => {
+                const userAnswer = document.getElementById(item.id).value;
+                const isCorrect = checkAnswer(userAnswer, answers[item.id]);
+                if (isCorrect) score++;
+
+                feedbackHTML += `<div class="feedback-item ${isCorrect ? 'correct' : 'incorrect'}">
+                    <strong>${item.label}:</strong> ${isCorrect ? '✓ Correct!' : '✗ Expected: ' + correctText[item.id]}
+                </div>`;
+            });
+
+            const percentage = Math.round((score / total) * 100);
+            const scoreHTML = `<div class="score">Your Score: <span class="score-value">${score}/${total}</span> (${percentage}%)</div>`;
+
+            document.getElementById('feedback').innerHTML = scoreHTML + feedbackHTML;
+            document.getElementById('feedback').classList.add('show');
+            document.getElementById('feedback').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function resetQuiz() {
+            document.getElementById('vocabForm').reset();
+            document.getElementById('feedback').classList.remove('show');
+            document.getElementById('feedback').innerHTML = '';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
