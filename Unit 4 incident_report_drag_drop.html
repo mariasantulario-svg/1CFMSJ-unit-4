@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incident Report - Drag & Drop Activity</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #e67e22;
+            font-weight: bold;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .instructions {
+            background: #f8f9fa;
+            padding: 15px;
+            border-left: 4px solid #e67e22;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .instructions strong {
+            color: #2c3e50;
+        }
+
+        .word-bank {
+            background: #fff3cd;
+            border: 2px dashed #e67e22;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            min-height: 80px;
+        }
+
+        .word-bank h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .words-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .word {
+            background: #e67e22;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: move;
+            user-select: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .word:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .word.dragging {
+            opacity: 0.5;
+        }
+
+        .text-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+
+        .text-section h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #e67e22;
+            padding-bottom: 8px;
+        }
+
+        .drop-zone {
+            display: inline-block;
+            min-width: 120px;
+            padding: 4px 12px;
+            border: 2px dashed #2c3e50;
+            border-radius: 5px;
+            background: white;
+            min-height: 30px;
+            vertical-align: middle;
+            transition: all 0.3s;
+            margin: 0 3px;
+        }
+
+        .drop-zone.drag-over {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+
+        .drop-zone.filled {
+            background: #e67e22;
+            color: white;
+            border-color: #e67e22;
+            font-weight: bold;
+        }
+
+        .drop-zone.correct {
+            background: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+
+        .drop-zone.incorrect {
+            background: #dc3545;
+            color: white;
+            border-color: #dc3545;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .button-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        button {
+            background: #2c3e50;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: #1a252f;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .result {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .result.show {
+            display: block;
+        }
+
+        .result.success {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #28a745;
+        }
+
+        .result.partial {
+            background: #fff3cd;
+            color: #856404;
+            border: 2px solid #ffc107;
+        }
+
+        .score {
+            font-size: 32px;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .text-section {
+                font-size: 14px;
+            }
+
+            .drop-zone {
+                min-width: 100px;
+                display: block;
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⚡ ELECTRICAL INCIDENT REPORT ⚡</h1>
+        <div class="subtitle">ACTIVITY A: Drag & Drop</div>
+
+        <div class="instructions">
+            <strong>📋 Instructions:</strong> Drag the words from the word bank and drop them into the correct gaps in David Thompson's incident report. Each word can only be used once.
+        </div>
+
+        <div class="word-bank">
+            <h3>🔤 Word Bank:</h3>
+            <div class="words-container" id="wordBank">
+                <div class="word" draggable="true" data-word="occurred">occurred</div>
+                <div class="word" draggable="true" data-word="suddenly">suddenly</div>
+                <div class="word" draggable="true" data-word="prevented">prevented</div>
+                <div class="word" draggable="true" data-word="replacing">replacing</div>
+                <div class="word" draggable="true" data-word="inspected">inspected</div>
+                <div class="word" draggable="true" data-word="working">working</div>
+                <div class="word" draggable="true" data-word="wearing">wearing</div>
+                <div class="word" draggable="true" data-word="called">called</div>
+            </div>
+        </div>
+
+        <div class="text-section">
+            <h3>WHAT HAPPENED?</h3>
+            <p>
+                Yesterday at approximately 2:30 PM, I was <span class="drop-zone" data-answer="working"></span> on the main circuit panel in the west wing of the power station. I was <span class="drop-zone" data-answer="replacing"></span> a damaged circuit breaker that had shown signs of wear. While I was disconnecting the old wiring, a spark <span class="drop-zone" data-answer="suddenly"></span> jumped and hit my right hand. The incident <span class="drop-zone" data-answer="occurred"></span> while I was removing the last connection. Fortunately, I was <span class="drop-zone" data-answer="wearing"></span> insulated gloves and safety glasses, which <span class="drop-zone" data-answer="prevented"></span> more serious injury. I immediately <span class="drop-zone" data-answer="called"></span> the emergency response team, who arrived within minutes.
+            </p>
+        </div>
+
+        <div class="text-section">
+            <h3>CONTRIBUTING FACTORS:</h3>
+            <p>
+                The circuit breaker was old and had not been properly <span class="drop-zone" data-answer="inspected"></span> recently. The equipment showed clear signs of wear that should have been identified during routine maintenance checks.
+            </p>
+        </div>
+
+        <div class="button-container">
+            <button onclick="checkAnswers()">✓ Check Answers</button>
+            <button onclick="resetActivity()">↻ Reset</button>
+        </div>
+
+        <div class="result" id="result">
+            <div id="resultText"></div>
+            <div class="score" id="score"></div>
+        </div>
+    </div>
+
+    <script>
+        let draggedElement = null;
+        const totalGaps = 8;
+
+        // Initialize drag and drop
+        function initDragAndDrop() {
+            const words = document.querySelectorAll('.word');
+            const dropZones = document.querySelectorAll('.drop-zone');
+
+            words.forEach(word => {
+                word.addEventListener('dragstart', handleDragStart);
+                word.addEventListener('dragend', handleDragEnd);
+            });
+
+            dropZones.forEach(zone => {
+                zone.addEventListener('dragover', handleDragOver);
+                zone.addEventListener('drop', handleDrop);
+                zone.addEventListener('dragleave', handleDragLeave);
+                zone.addEventListener('click', handleZoneClick);
+            });
+        }
+
+        function handleDragStart(e) {
+            draggedElement = this;
+            this.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/html', this.innerHTML);
+        }
+
+        function handleDragEnd(e) {
+            this.classList.remove('dragging');
+        }
+
+        function handleDragOver(e) {
+            if (e.preventDefault) {
+                e.preventDefault();
+            }
+            e.dataTransfer.dropEffect = 'move';
+            this.classList.add('drag-over');
+            return false;
+        }
+
+        function handleDragLeave(e) {
+            this.classList.remove('drag-over');
+        }
+
+        function handleDrop(e) {
+            if (e.stopPropagation) {
+                e.stopPropagation();
+            }
+
+            this.classList.remove('drag-over');
+
+            if (draggedElement) {
+                // If zone already has a word, return it to bank
+                if (this.classList.contains('filled')) {
+                    const oldWord = this.textContent;
+                    returnWordToBank(oldWord);
+                }
+
+                // Place new word
+                this.textContent = draggedElement.textContent;
+                this.classList.add('filled');
+                this.classList.remove('correct', 'incorrect');
+                draggedElement.remove();
+                draggedElement = null;
+
+                // Hide result when making changes
+                document.getElementById('result').classList.remove('show');
+            }
+
+            return false;
+        }
+
+        function handleZoneClick(e) {
+            // Click to remove word and return to bank
+            if (this.classList.contains('filled')) {
+                const word = this.textContent;
+                returnWordToBank(word);
+                this.textContent = '';
+                this.classList.remove('filled', 'correct', 'incorrect');
+                document.getElementById('result').classList.remove('show');
+            }
+        }
+
+        function returnWordToBank(word) {
+            const wordBank = document.getElementById('wordBank');
+            const wordElement = document.createElement('div');
+            wordElement.className = 'word';
+            wordElement.draggable = true;
+            wordElement.textContent = word;
+            wordElement.dataset.word = word;
+            wordElement.addEventListener('dragstart', handleDragStart);
+            wordElement.addEventListener('dragend', handleDragEnd);
+            wordBank.appendChild(wordElement);
+        }
+
+        function checkAnswers() {
+            const dropZones = document.querySelectorAll('.drop-zone');
+            let correct = 0;
+            let filled = 0;
+
+            dropZones.forEach(zone => {
+                if (zone.classList.contains('filled')) {
+                    filled++;
+                    const userAnswer = zone.textContent.trim().toLowerCase();
+                    const correctAnswer = zone.dataset.answer.toLowerCase();
+
+                    if (userAnswer === correctAnswer) {
+                        zone.classList.remove('incorrect');
+                        zone.classList.add('correct');
+                        correct++;
+                    } else {
+                        zone.classList.remove('correct');
+                        zone.classList.add('incorrect');
+                    }
+                }
+            });
+
+            // Show result
+            const resultDiv = document.getElementById('result');
+            const resultText = document.getElementById('resultText');
+            const scoreDiv = document.getElementById('score');
+
+            if (filled < totalGaps) {
+                resultText.textContent = '⚠️ Please fill all the gaps before checking!';
+                resultDiv.className = 'result show partial';
+                scoreDiv.textContent = '';
+            } else {
+                const percentage = Math.round((correct / totalGaps) * 100);
+                scoreDiv.textContent = `${correct} / ${totalGaps} correct (${percentage}%)`;
+
+                if (correct === totalGaps) {
+                    resultText.textContent = '🎉 Perfect! Excellent work!';
+                    resultDiv.className = 'result show success';
+                } else if (correct >= totalGaps * 0.7) {
+                    resultText.textContent = '👍 Good job! Check the incorrect ones.';
+                    resultDiv.className = 'result show partial';
+                } else {
+                    resultText.textContent = '📚 Keep trying! Review the vocabulary.';
+                    resultDiv.className = 'result show partial';
+                }
+            }
+
+            resultDiv.classList.add('show');
+        }
+
+        function resetActivity() {
+            // Clear all drop zones
+            const dropZones = document.querySelectorAll('.drop-zone');
+            dropZones.forEach(zone => {
+                if (zone.classList.contains('filled')) {
+                    const word = zone.textContent;
+                    returnWordToBank(word);
+                }
+                zone.textContent = '';
+                zone.classList.remove('filled', 'correct', 'incorrect');
+            });
+
+            // Hide result
+            document.getElementById('result').classList.remove('show');
+        }
+
+        // Initialize on load
+        initDragAndDrop();
+    </script>
+</body>
+</html>

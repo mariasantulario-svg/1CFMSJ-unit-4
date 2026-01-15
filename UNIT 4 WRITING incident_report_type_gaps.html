@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incident Report - Type in the Gaps</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #e67e22;
+            font-weight: bold;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .instructions {
+            background: #f8f9fa;
+            padding: 15px;
+            border-left: 4px solid #e67e22;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .instructions strong {
+            color: #2c3e50;
+        }
+
+        .word-bank {
+            background: #fff3cd;
+            border: 2px solid #e67e22;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .word-bank h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .words-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+        }
+
+        .word-item {
+            background: #e67e22;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .text-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            line-height: 2;
+            font-size: 16px;
+        }
+
+        .text-section h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #e67e22;
+            padding-bottom: 8px;
+        }
+
+        .gap-input {
+            display: inline-block;
+            min-width: 140px;
+            padding: 4px 8px;
+            border: 2px solid #2c3e50;
+            border-radius: 5px;
+            background: white;
+            font-size: 15px;
+            text-align: center;
+            transition: all 0.3s;
+            margin: 0 3px;
+        }
+
+        .gap-input:focus {
+            outline: none;
+            border-color: #e67e22;
+            box-shadow: 0 0 5px rgba(230, 126, 34, 0.5);
+        }
+
+        .gap-input.correct {
+            background: #28a745;
+            color: white;
+            border-color: #28a745;
+            font-weight: bold;
+        }
+
+        .gap-input.incorrect {
+            background: #dc3545;
+            color: white;
+            border-color: #dc3545;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .button-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background: #2c3e50;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: #1a252f;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        button.hint-btn {
+            background: #17a2b8;
+        }
+
+        button.hint-btn:hover {
+            background: #138496;
+        }
+
+        .result {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .result.show {
+            display: block;
+        }
+
+        .result.success {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #28a745;
+        }
+
+        .result.partial {
+            background: #fff3cd;
+            color: #856404;
+            border: 2px solid #ffc107;
+        }
+
+        .score {
+            font-size: 32px;
+            margin-top: 10px;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .text-section {
+                font-size: 14px;
+            }
+
+            .gap-input {
+                min-width: 120px;
+                display: block;
+                margin: 5px auto;
+            }
+
+            .words-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⚡ ELECTRICAL INCIDENT REPORT ⚡</h1>
+        <div class="subtitle">ACTIVITY B: Type in the Gaps</div>
+
+        <div class="instructions">
+            <strong>📋 Instructions:</strong> Type the correct word from the word bank into each gap. Each word can only be used ONCE. Pay attention to verb tenses!
+        </div>
+
+        <div class="word-bank">
+            <h3>🔤 Word Bank (16 words):</h3>
+            <div class="words-grid">
+                <div class="word-item">arrived</div>
+                <div class="word-item">occurred</div>
+                <div class="word-item">testing</div>
+                <div class="word-item">disconnecting</div>
+                <div class="word-item">prevent</div>
+                <div class="word-item">jumped</div>
+                <div class="word-item">caused</div>
+                <div class="word-item">wearing</div>
+                <div class="word-item">turned</div>
+                <div class="word-item">replacing</div>
+                <div class="word-item">reduced</div>
+                <div class="word-item">working</div>
+                <div class="word-item">checked</div>
+                <div class="word-item">inspected</div>
+                <div class="word-item">serious</div>
+                <div class="word-item">immediately</div>
+            </div>
+        </div>
+
+        <div class="text-section">
+            <h3>WHAT HAPPENED?</h3>
+            <p>
+                On January 14, 2026, at approximately 2:30 PM, I was <input type="text" class="gap-input" data-answer="working" id="gap1"> on the main circuit panel located in the west wing of the facility. My specific task involved <input type="text" class="gap-input" data-answer="replacing" id="gap2"> a damaged circuit breaker. While I was <input type="text" class="gap-input" data-answer="disconnecting" id="gap3"> the old wiring, I was also <input type="text" class="gap-input" data-answer="testing" id="gap4"> the voltage levels to ensure safety. Suddenly, an unexpected spark <input type="text" class="gap-input" data-answer="jumped" id="gap5"> from the connection and hit my right hand. The electrical shock <input type="text" class="gap-input" data-answer="occurred" id="gap6"> at exactly 2:35 PM. Fortunately, I was <input type="text" class="gap-input" data-answer="wearing" id="gap7"> my insulated gloves and safety glasses, which <input type="text" class="gap-input" data-answer="reduced" id="gap8"> the severity of the injury. I <input type="text" class="gap-input" data-answer="immediately" id="gap9"> <input type="text" class="gap-input" data-answer="turned" id="gap10"> off the main power supply and called for help. The emergency response team <input type="text" class="gap-input" data-answer="arrived" id="gap11"> within five minutes and <input type="text" class="gap-input" data-answer="checked" id="gap12"> my vital signs before transporting me to the medical center.
+            </p>
+        </div>
+
+        <div class="text-section">
+            <h3>CONTRIBUTING FACTORS:</h3>
+            <p>
+                The circuit breaker had not been properly <input type="text" class="gap-input" data-answer="inspected" id="gap13"> during recent maintenance checks. The equipment showed signs of wear that should have been identified earlier. This lack of regular inspection <input type="text" class="gap-input" data-answer="caused" id="gap14"> the equipment to fail unexpectedly.
+            </p>
+        </div>
+
+        <div class="text-section">
+            <h3>RECOMMENDATIONS:</h3>
+            <p>
+                To <input type="text" class="gap-input" data-answer="prevent" id="gap15"> similar accidents, I recommend implementing more frequent equipment inspections and replacing worn circuit breakers before they become a <input type="text" class="gap-input" data-answer="serious" id="gap16"> safety hazard.
+            </p>
+        </div>
+
+        <div class="button-container">
+            <button onclick="checkAnswers()">✓ Check Answers</button>
+            <button onclick="showHint()" class="hint-btn">💡 Show Hint</button>
+            <button onclick="resetActivity()">↻ Reset</button>
+        </div>
+
+        <div class="result" id="result">
+            <div id="resultText"></div>
+            <div class="score" id="score"></div>
+            <div class="feedback" id="feedback"></div>
+        </div>
+    </div>
+
+    <script>
+        const totalGaps = 16;
+        const usedWords = new Set();
+        let hintsUsed = 0;
+
+        // Normalize input for comparison
+        function normalizeText(text) {
+            return text.toLowerCase().trim().replace(/\s+/g, ' ');
+        }
+
+        function checkAnswers() {
+            const inputs = document.querySelectorAll('.gap-input');
+            let correct = 0;
+            let filled = 0;
+            usedWords.clear();
+            const duplicates = [];
+
+            // First pass: check for duplicates and count
+            inputs.forEach(input => {
+                const value = normalizeText(input.value);
+                if (value) {
+                    filled++;
+                    if (usedWords.has(value)) {
+                        duplicates.push(value);
+                    } else {
+                        usedWords.add(value);
+                    }
+                }
+            });
+
+            // Second pass: mark correct/incorrect
+            inputs.forEach(input => {
+                if (input.value.trim()) {
+                    const userAnswer = normalizeText(input.value);
+                    const correctAnswer = normalizeText(input.dataset.answer);
+
+                    if (userAnswer === correctAnswer) {
+                        input.classList.remove('incorrect');
+                        input.classList.add('correct');
+                        input.disabled = true;
+                        correct++;
+                    } else {
+                        input.classList.remove('correct');
+                        input.classList.add('incorrect');
+                    }
+                }
+            });
+
+            // Show result
+            const resultDiv = document.getElementById('result');
+            const resultText = document.getElementById('resultText');
+            const scoreDiv = document.getElementById('score');
+            const feedbackDiv = document.getElementById('feedback');
+
+            if (filled < totalGaps) {
+                resultText.textContent = '⚠️ Please fill all the gaps before checking!';
+                resultDiv.className = 'result show partial';
+                scoreDiv.textContent = `${filled} / ${totalGaps} gaps filled`;
+                feedbackDiv.textContent = '';
+            } else {
+                const percentage = Math.round((correct / totalGaps) * 100);
+                scoreDiv.textContent = `${correct} / ${totalGaps} correct (${percentage}%)`;
+
+                let feedback = '';
+                if (duplicates.length > 0) {
+                    feedback = `⚠️ Remember: Each word can only be used ONCE. Check for duplicates.`;
+                }
+
+                if (correct === totalGaps) {
+                    resultText.textContent = '🎉 Perfect! Outstanding work!';
+                    resultDiv.className = 'result show success';
+                    feedback = '✨ You have mastered the incident report vocabulary!';
+                } else if (correct >= totalGaps * 0.8) {
+                    resultText.textContent = '👍 Excellent! Just a few more to fix.';
+                    resultDiv.className = 'result show partial';
+                } else if (correct >= totalGaps * 0.6) {
+                    resultText.textContent = '📚 Good effort! Review the incorrect answers.';
+                    resultDiv.className = 'result show partial';
+                } else {
+                    resultText.textContent = '💪 Keep trying! Check the word bank carefully.';
+                    resultDiv.className = 'result show partial';
+                }
+
+                feedbackDiv.textContent = feedback;
+            }
+
+            resultDiv.classList.add('show');
+        }
+
+        function showHint() {
+            const inputs = document.querySelectorAll('.gap-input');
+            const emptyInputs = Array.from(inputs).filter(input => 
+                !input.value.trim() && !input.disabled
+            );
+
+            if (emptyInputs.length === 0) {
+                alert('All gaps are filled! Click "Check Answers" to see your score.');
+                return;
+            }
+
+            // Show hint for first empty gap
+            const firstEmpty = emptyInputs[0];
+            const answer = firstEmpty.dataset.answer;
+            const hint = answer.substring(0, 3) + '...';
+            
+            alert(`💡 Hint for next gap: "${hint}"\n\nThe word starts with "${answer.substring(0, 3)}"`);
+            firstEmpty.focus();
+            hintsUsed++;
+        }
+
+        function resetActivity() {
+            const inputs = document.querySelectorAll('.gap-input');
+            inputs.forEach(input => {
+                input.value = '';
+                input.disabled = false;
+                input.classList.remove('correct', 'incorrect');
+            });
+
+            document.getElementById('result').classList.remove('show');
+            usedWords.clear();
+            hintsUsed = 0;
+        }
+
+        // Enable Enter key to check answers
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkAnswers();
+            }
+        });
+
+        // Auto-focus first input
+        document.getElementById('gap1').focus();
+    </script>
+</body>
+</html>
