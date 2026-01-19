@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 4 Session 4 - Emergency Call Practice</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .exercise-section {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-left: 5px solid #3b82f6;
+        }
+
+        .exercise-section h2 {
+            color: #1e3a8a;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        .exercise-section h3 {
+            color: #3b82f6;
+            margin: 25px 0 15px 0;
+            font-size: 1.3em;
+        }
+
+        .question {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .question-number {
+            display: inline-block;
+            background: #3b82f6;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1em;
+            width: 200px;
+            transition: all 0.3s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        input.correct {
+            border-color: #10b981;
+            background: #f0fdf4;
+        }
+
+        input.incorrect {
+            border-color: #ef4444;
+            background: #fef2f2;
+        }
+
+        select {
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1em;
+            width: 220px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+
+        select.correct {
+            border-color: #10b981;
+            background: #f0fdf4;
+        }
+
+        select.incorrect {
+            border-color: #ef4444;
+            background: #fef2f2;
+        }
+
+        button {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 10px 10px 10px 0;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .reset-btn {
+            background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+            box-shadow: 0 4px 12px rgba(100, 116, 139, 0.3);
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.success {
+            background: #f0fdf4;
+            color: #166534;
+            border-left: 5px solid #10b981;
+        }
+
+        .feedback.partial {
+            background: #fef3c7;
+            color: #92400e;
+            border-left: 5px solid #f59e0b;
+        }
+
+        .feedback.error {
+            background: #fef2f2;
+            color: #991b1b;
+            border-left: 5px solid #ef4444;
+        }
+
+        .score-display {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 20px 0;
+            font-size: 1.3em;
+            font-weight: bold;
+            display: none;
+        }
+
+        .score-display.show {
+            display: block;
+        }
+
+        .example-box {
+            background: #fef3c7;
+            border-left: 5px solid #f59e0b;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .example-box strong {
+            color: #92400e;
+        }
+
+        .grammar-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .grammar-table th {
+            background: #1e3a8a;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .grammar-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .grammar-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .grammar-table tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.6em;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            input[type="text"], select {
+                width: 100%;
+                margin: 5px 0;
+            }
+            
+            button {
+                width: 100%;
+                margin: 5px 0;
+            }
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Unit 4 Session 4 - Emergency Call Practice</h1>
+            <p>Practice the structures you need for your speaking video</p>
+        </div>
+
+        <div class="content">
+            <!-- Exercise 1: Opening Phrases -->
+            <div class="exercise-section">
+                <h2>Exercise 1: Opening the Emergency Call</h2>
+                <p style="margin-bottom: 20px;"><strong>Instructions:</strong> Complete the opening phrases with the correct word.</p>
+
+                <div class="question">
+                    <span class="question-number">1</span>
+                    I need to <input type="text" id="q1" data-answer="report"> an emergency.
+                </div>
+
+                <div class="question">
+                    <span class="question-number">2</span>
+                    We <input type="text" id="q2" data-answer="need"> an ambulance urgently.
+                </div>
+
+                <div class="question">
+                    <span class="question-number">3</span>
+                    This <input type="text" id="q3" data-answer="is"> an electrical accident.
+                </div>
+
+                <div class="question">
+                    <span class="question-number">4</span>
+                    I'm <input type="text" id="q4" data-answer="calling"> from Substation Vallecas.
+                </div>
+
+                <button onclick="checkExercise1()">Check Answers</button>
+                <button onclick="resetExercise1()" class="reset-btn">Reset</button>
+                <div id="feedback1" class="feedback"></div>
+            </div>
+
+            <!-- Exercise 2: Past Tenses -->
+            <div class="exercise-section">
+                <h2>Exercise 2: Past Simple vs Past Continuous</h2>
+                <p style="margin-bottom: 20px;"><strong>Instructions:</strong> Choose the correct verb form.</p>
+
+                <div class="example-box">
+                    <strong>Remember:</strong> Past Continuous for background actions (was/were + -ing) | Past Simple for sudden events
+                </div>
+
+                <div class="question">
+                    <span class="question-number">1</span>
+                    While he 
+                    <select id="q5" data-answer="was working">
+                        <option value="">Select...</option>
+                        <option value="worked">worked</option>
+                        <option value="was working">was working</option>
+                        <option value="is working">is working</option>
+                    </select>
+                    on the panel, it 
+                    <select id="q6" data-answer="exploded">
+                        <option value="">Select...</option>
+                        <option value="exploded">exploded</option>
+                        <option value="was exploding">was exploding</option>
+                        <option value="explodes">explodes</option>
+                    </select>
+                </div>
+
+                <div class="question">
+                    <span class="question-number">2</span>
+                    She 
+                    <select id="q7" data-answer="was checking">
+                        <option value="">Select...</option>
+                        <option value="checked">checked</option>
+                        <option value="was checking">was checking</option>
+                        <option value="checks">checks</option>
+                    </select>
+                    the circuit when she 
+                    <select id="q8" data-answer="received">
+                        <option value="">Select...</option>
+                        <option value="received">received</option>
+                        <option value="was receiving">was receiving</option>
+                        <option value="receives">receives</option>
+                    </select>
+                    a shock.
+                </div>
+
+                <div class="question">
+                    <span class="question-number">3</span>
+                    The fire 
+                    <select id="q9" data-answer="started">
+                        <option value="">Select...</option>
+                        <option value="started">started</option>
+                        <option value="was starting">was starting</option>
+                        <option value="starts">starts</option>
+                    </select>
+                    while we 
+                    <select id="q10" data-answer="were testing">
+                        <option value="">Select...</option>
+                        <option value="tested">tested</option>
+                        <option value="were testing">were testing</option>
+                        <option value="test">test</option>
+                    </select>
+                    the equipment.
+                </div>
+
+                <div class="question">
+                    <span class="question-number">4</span>
+                    I 
+                    <select id="q11" data-answer="was standing">
+                        <option value="">Select...</option>
+                        <option value="stood">stood</option>
+                        <option value="was standing">was standing</option>
+                        <option value="stand">stand</option>
+                    </select>
+                    nearby when the accident 
+                    <select id="q12" data-answer="happened">
+                        <option value="">Select...</option>
+                        <option value="happened">happened</option>
+                        <option value="was happening">was happening</option>
+                        <option value="happens">happens</option>
+                    </select>
+                </div>
+
+                <button onclick="checkExercise2()">Check Answers</button>
+                <button onclick="resetExercise2()" class="reset-btn">Reset</button>
+                <div id="feedback2" class="feedback"></div>
+            </div>
+
+            <!-- Exercise 3: Present Perfect -->
+            <div class="exercise-section">
+                <h2>Exercise 3: Present Perfect - Actions Already Taken</h2>
+                <p style="margin-bottom: 20px;"><strong>Instructions:</strong> Complete with the correct Present Perfect form.</p>
+
+                <div class="example-box">
+                    <strong>Example:</strong> turn off / power → I've turned off the power
+                </div>
+
+                <table class="grammar-table">
+                    <tr>
+                        <th>Form</th>
+                        <th>Example</th>
+                    </tr>
+                    <tr>
+                        <td>I/We + <strong>have ('ve)</strong> + participle</td>
+                        <td>I've cut the power | We've started CPR</td>
+                    </tr>
+                    <tr>
+                        <td>He/She + <strong>has ('s)</strong> + participle</td>
+                        <td>He's stopped breathing | She's evacuated the area</td>
+                    </tr>
+                </table>
+
+                <div class="question">
+                    <span class="question-number">1</span>
+                    start / CPR → I 
+                    <input type="text" id="q13" data-answer="'ve started|have started" style="width: 250px;">
+                    CPR.
+                </div>
+
+                <div class="question">
+                    <span class="question-number">2</span>
+                    use / fire extinguisher → We 
+                    <input type="text" id="q14" data-answer="'ve used|have used" style="width: 250px;">
+                    the fire extinguisher.
+                </div>
+
+                <div class="question">
+                    <span class="question-number">3</span>
+                    evacuate / the area → I 
+                    <input type="text" id="q15" data-answer="'ve evacuated|have evacuated" style="width: 250px;">
+                    the area.
+                </div>
+
+                <div class="question">
+                    <span class="question-number">4</span>
+                    apply / pressure → We 
+                    <input type="text" id="q16" data-answer="'ve applied|have applied" style="width: 250px;">
+                    pressure to the wound.
+                </div>
+
+                <div class="question">
+                    <span class="question-number">5</span>
+                    control / bleeding → I 
+                    <input type="text" id="q17" data-answer="'ve controlled|have controlled" style="width: 250px;">
+                    the bleeding.
+                </div>
+
+                <button onclick="checkExercise3()">Check Answers</button>
+                <button onclick="resetExercise3()" class="reset-btn">Reset</button>
+                <div id="feedback3" class="feedback"></div>
+            </div>
+
+            <!-- Exercise 4: Professional Collocations -->
+            <div class="exercise-section">
+                <h2>Exercise 4: Professional Collocations</h2>
+                <p style="margin-bottom: 20px;"><strong>Instructions:</strong> Match the verbs with the correct nouns.</p>
+
+                <table class="grammar-table">
+                    <tr>
+                        <th style="width: 40%">Verb</th>
+                        <th style="width: 60%">Noun</th>
+                    </tr>
+                    <tr>
+                        <td>1. call</td>
+                        <td>
+                            <select id="q18" data-answer="b">
+                                <option value="">Select...</option>
+                                <option value="a">the power</option>
+                                <option value="b">emergency services</option>
+                                <option value="c">CPR</option>
+                                <option value="d">pressure to wounds</option>
+                                <option value="e">the area</option>
+                                <option value="f">the fire extinguisher</option>
+                                <option value="g">vital signs</option>
+                                <option value="h">the bleeding</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2. turn off</td>
+                        <td>
+                            <select id="q19" data-answer="a">
+                                <option value="">Select...</option>
+                                <option value="a">the power</option>
+                                <option value="b">emergency services</option>
+                                <option value="c">CPR</option>
+                                <option value="d">pressure to wounds</option>
+                                <option value="e">the area</option>
+                                <option value="f">the fire extinguisher</option>
+                                <option value="g">vital signs</option>
+                                <option value="h">the bleeding</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>3. start</td>
+                        <td>
+                            <select id="q20" data-answer="c">
+                                <option value="">Select...</option>
+                                <option value="a">the power</option>
+                                <option value="b">emergency services</option>
+                                <option value="c">CPR</option>
+                                <option value="d">pressure to wounds</option>
+                                <option value="e">the area</option>
+                                <option value="f">the fire extinguisher</option>
+                                <option value="g">vital signs</option>
+                                <option value="h">the bleeding</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>4. apply</td>
+                        <td>
+                            <select id="q21" data-answer="d">
+                                <option value="">Select...</option>
+                                <option value="a">the power</option>
+                                <option value="b">emergency services</option>
+                                <option value="c">CPR</option>
+                                <option value="d">pressure to wounds</option>
+                                <option value="e">the area</option>
+                                <option value="f">the fire extinguisher</option>
+                                <option value="g">vital signs</option>
+                                <option value="h">the bleeding</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>5. use</td>
+                        <td>
+                            <select id="q22" data-answer="f">
+                                <option value="">Select...</option>
+                                <option value="a">the power</option>
+                                <option value="b">emergency services</option>
+                                <option value="c">CPR</option>
+                                <option value="d">pressure to wounds</option>
+                                <option value="e">the area</option>
+                                <option value="f">the fire extinguisher</option>
+                                <option value="g">vital signs</option>
+                                <option value="h">the bleeding</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>6. evacuate</td>
+                        <td>
+                            <select id="q23" data-answer="e">
+                                <option value="">Select...</option>
+                                <option value="a">the power</option>
+                                <option value="b">emergency services</option>
+                                <option value="c">CPR</option>
+                                <option value="d">pressure to wounds</option>
+                                <option value="e">the area</option>
+                                <option value="f">the fire extinguisher</option>
+                                <option value="g">vital signs</option>
+                                <option value="h">the bleeding</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>7. check</td>
+                        <td>
+                            <select id="q24" data-answer="g">
+                                <option value="">Select...</option>
+                                <option value="a">the power</option>
+                                <option value="b">emergency services</option>
+                                <option value="c">CPR</option>
+                                <option value="d">pressure to wounds</option>
+                                <option value="e">the area</option>
+                                <option value="f">the fire extinguisher</option>
+                                <option value="g">vital signs</option>
+                                <option value="h">the bleeding</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>8. control</td>
+                        <td>
+                            <select id="q25" data-answer="h">
+                                <option value="">Select...</option>
+                                <option value="a">the power</option>
+                                <option value="b">emergency services</option>
+                                <option value="c">CPR</option>
+                                <option value="d">pressure to wounds</option>
+                                <option value="e">the area</option>
+                                <option value="f">the fire extinguisher</option>
+                                <option value="g">vital signs</option>
+                                <option value="h">the bleeding</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+
+                <button onclick="checkExercise4()">Check Answers</button>
+                <button onclick="resetExercise4()" class="reset-btn">Reset</button>
+                <div id="feedback4" class="feedback"></div>
+            </div>
+
+            <!-- Final Score -->
+            <div id="finalScore" class="score-display"></div>
+            <div class="progress-bar">
+                <div id="progressFill" class="progress-fill"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let totalScore = 0;
+        let maxScore = 25;
+
+        // Exercise 1
+        function checkExercise1() {
+            let score = 0;
+            const answers = [
+                {id: 'q1', answer: 'report'},
+                {id: 'q2', answer: 'need'},
+                {id: 'q3', answer: 'is'},
+                {id: 'q4', answer: 'calling'}
+            ];
+
+            answers.forEach(item => {
+                const input = document.getElementById(item.id);
+                const userAnswer = input.value.trim().toLowerCase();
+                if (userAnswer === item.answer) {
+                    input.classList.remove('incorrect');
+                    input.classList.add('correct');
+                    score++;
+                } else {
+                    input.classList.remove('correct');
+                    input.classList.add('incorrect');
+                }
+            });
+
+            showFeedback('feedback1', score, 4);
+            updateProgress();
+        }
+
+        function resetExercise1() {
+            ['q1', 'q2', 'q3', 'q4'].forEach(id => {
+                const input = document.getElementById(id);
+                input.value = '';
+                input.classList.remove('correct', 'incorrect');
+            });
+            document.getElementById('feedback1').classList.remove('show');
+        }
+
+        // Exercise 2
+        function checkExercise2() {
+            let score = 0;
+            const answers = [
+                {id: 'q5', answer: 'was working'},
+                {id: 'q6', answer: 'exploded'},
+                {id: 'q7', answer: 'was checking'},
+                {id: 'q8', answer: 'received'},
+                {id: 'q9', answer: 'started'},
+                {id: 'q10', answer: 'were testing'},
+                {id: 'q11', answer: 'was standing'},
+                {id: 'q12', answer: 'happened'}
+            ];
+
+            answers.forEach(item => {
+                const select = document.getElementById(item.id);
+                if (select.value === item.answer) {
+                    select.classList.remove('incorrect');
+                    select.classList.add('correct');
+                    score++;
+                } else {
+                    select.classList.remove('correct');
+                    select.classList.add('incorrect');
+                }
+            });
+
+            showFeedback('feedback2', score, 8);
+            updateProgress();
+        }
+
+        function resetExercise2() {
+            ['q5', 'q6', 'q7', 'q8', 'q9', 'q10', 'q11', 'q12'].forEach(id => {
+                const select = document.getElementById(id);
+                select.value = '';
+                select.classList.remove('correct', 'incorrect');
+            });
+            document.getElementById('feedback2').classList.remove('show');
+        }
+
+        // Exercise 3
+        function checkExercise3() {
+            let score = 0;
+            const answers = [
+                {id: 'q13', answers: ["'ve started", "have started"]},
+                {id: 'q14', answers: ["'ve used", "have used"]},
+                {id: 'q15', answers: ["'ve evacuated", "have evacuated"]},
+                {id: 'q16', answers: ["'ve applied", "have applied"]},
+                {id: 'q17', answers: ["'ve controlled", "have controlled"]}
+            ];
+
+            answers.forEach(item => {
+                const input = document.getElementById(item.id);
+                const userAnswer = input.value.trim().toLowerCase();
+                if (item.answers.includes(userAnswer)) {
+                    input.classList.remove('incorrect');
+                    input.classList.add('correct');
+                    score++;
+                } else {
+                    input.classList.remove('correct');
+                    input.classList.add('incorrect');
+                }
+            });
+
+            showFeedback('feedback3', score, 5);
+            updateProgress();
+        }
+
+        function resetExercise3() {
+            ['q13', 'q14', 'q15', 'q16', 'q17'].forEach(id => {
+                const input = document.getElementById(id);
+                input.value = '';
+                input.classList.remove('correct', 'incorrect');
+            });
+            document.getElementById('feedback3').classList.remove('show');
+        }
+
+        // Exercise 4
+        function checkExercise4() {
+            let score = 0;
+            const answers = [
+                {id: 'q18', answer: 'b'},
+                {id: 'q19', answer: 'a'},
+                {id: 'q20', answer: 'c'},
+                {id: 'q21', answer: 'd'},
+                {id: 'q22', answer: 'f'},
+                {id: 'q23', answer: 'e'},
+                {id: 'q24', answer: 'g'},
+                {id: 'q25', answer: 'h'}
+            ];
+
+            answers.forEach(item => {
+                const select = document.getElementById(item.id);
+                if (select.value === item.answer) {
+                    select.classList.remove('incorrect');
+                    select.classList.add('correct');
+                    score++;
+                } else {
+                    select.classList.remove('correct');
+                    select.classList.add('incorrect');
+                }
+            });
+
+            showFeedback('feedback4', score, 8);
+            updateProgress();
+        }
+
+        function resetExercise4() {
+            ['q18', 'q19', 'q20', 'q21', 'q22', 'q23', 'q24', 'q25'].forEach(id => {
+                const select = document.getElementById(id);
+                select.value = '';
+                select.classList.remove('correct', 'incorrect');
+            });
+            document.getElementById('feedback4').classList.remove('show');
+        }
+
+        function showFeedback(feedbackId, score, total) {
+            const feedback = document.getElementById(feedbackId);
+            const percentage = (score / total) * 100;
+            
+            feedback.classList.remove('success', 'partial', 'error');
+            feedback.classList.add('show');
+
+            if (percentage === 100) {
+                feedback.classList.add('success');
+                feedback.innerHTML = `Perfect! ${score}/${total} correct! 🎉`;
+            } else if (percentage >= 60) {
+                feedback.classList.add('partial');
+                feedback.innerHTML = `Good work! ${score}/${total} correct. Review the incorrect answers.`;
+            } else {
+                feedback.classList.add('error');
+                feedback.innerHTML = `${score}/${total} correct. Keep practicing!`;
+            }
+        }
+
+        function updateProgress() {
+            let totalCorrect = 0;
+            
+            // Count all correct answers
+            document.querySelectorAll('input.correct, select.correct').forEach(() => totalCorrect++);
+            
+            const percentage = (totalCorrect / maxScore) * 100;
+            document.getElementById('progressFill').style.width = percentage + '%';
+
+            if (totalCorrect > 0) {
+                const scoreDisplay = document.getElementById('finalScore');
+                scoreDisplay.classList.add('show');
+                scoreDisplay.innerHTML = `Overall Progress: ${totalCorrect}/${maxScore} (${Math.round(percentage)}%)`;
+            }
+        }
+    </script>
+</body>
+</html>
